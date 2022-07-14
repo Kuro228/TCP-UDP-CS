@@ -52,20 +52,20 @@ public class UdpFileServer
         try
         {
             // Получаем удаленный IP-адрес и создаем IPEndPoint
-            Console.WriteLine("Введите удаленный IP-адрес");
+            Console.WriteLine("---- IP address received ----");
             endPoint = new IPEndPoint(remoteIPAddress, TCPPort);
 
             // Получаем путь файла и его размер (должен быть меньше 8kb)
-            Console.WriteLine("Введите путь к файлу и его имя");
+            Console.WriteLine("---- file path received ----");
             fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
             
-            //if (fs.Length > 8192)
-            //{
-            //    Console.Write("Файл должен весить меньше 8кБ");
-            //    sender.Close();
-            //    fs.Close();
-            //    return;
-            //}
+            if (fs.Length > 8192)
+            {
+             Console.Write("---- The file must be less than 8kb ----");
+               sender.Close();
+                fs.Close();
+                return;
+            }
 
             // Отправляем информацию о файле
             // Получаем тип и расширение файла
@@ -87,7 +87,7 @@ public class UdpFileServer
             
             stream.Read(bytes, 0, Convert.ToInt32(stream.Length));
 
-            Console.WriteLine("Отправка деталей файла...");
+            Console.WriteLine("---- Sending file details... ----");
 
             // Отправляем информацию о файле
             sender.Send(bytes, bytes.Length, endPoint);
@@ -101,7 +101,7 @@ public class UdpFileServer
             
             fs.Read(bytes, 0, bytes.Length);
 
-            Console.WriteLine("Отправка файла размером " + fs.Length + " байт");
+            Console.WriteLine("---- Sending a file size " + fs.Length + " byte ----");
             try
             {
                 // Отправляем файл
@@ -117,7 +117,7 @@ public class UdpFileServer
                 fs.Close();
                 sender.Close();
             }
-            Console.WriteLine("Файл успешно отправлен.");
+            Console.WriteLine("---- File sent successfully ----");
             Console.Read();
 
             Console.ReadLine();
