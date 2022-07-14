@@ -83,7 +83,7 @@ public class UdpFileServer
             // Считываем поток в байты
             stream.Position = 0;
 
-            Byte[] bytes = new Byte[1024];
+            Byte[] bytes = new Byte[stream.Length];
             
             stream.Read(bytes, 0, Convert.ToInt32(stream.Length));
 
